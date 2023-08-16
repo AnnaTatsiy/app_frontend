@@ -1,0 +1,4 @@
+export const GET_ALL_CUSTOMERS = 'GET_ALL_CUSTOMERS';
+export const GET_CUSTOMERS = 'GET_CUSTOMERS';
+export const ADD_CUSTOMER = 'ADD_CUSTOMER';
+export const EDIT_CUSTOMER = 'EDIT_CUSTOMER';
