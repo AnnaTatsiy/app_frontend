@@ -9,18 +9,21 @@ import ForCoaches from "./components/controlledTabs/forCoaches.jsx";
 import ForWorkouts from "./components/controlledTabs/forWorkouts.jsx";
 import GroupWorkoutDetails from "./components/groupWorkouts/groupWorkoutDetails.jsx";
 import GroupWorkoutBySchedule from "./components/groupWorkouts/groupWorkoutBySchedule.jsx";
+import AdminLayouts from "./components/layouts/adminLayouts.jsx";
 
 function App() {
     return (
         <Routes>
             <Route element={<AuthLayouts/>}>
                 <Route path={"/"} element={<Home/>}/>
-                <Route path={"/schedule"} element={<Schedule/>}/>
-                <Route path={"/customers"} element={<ForCustomers/>}/>
-                <Route path={"/coaches"} element={<ForCoaches/>}/>
-                <Route path={"/group-workouts"} element={<ForWorkouts/>}/>
-                <Route path={"/group-workouts/selected-by-id"} element={<GroupWorkoutDetails/>}/>
-                <Route path={"/group-workouts/select-workouts-by-schedule"} element={<GroupWorkoutBySchedule/>} />
+                <Route element={<AdminLayouts/>}>
+                    <Route path={"/schedule"} element={<Schedule/>}/>
+                    <Route path={"/customers"} element={<ForCustomers/>}/>
+                    <Route path={"/coaches"} element={<ForCoaches/>}/>
+                    <Route path={"/group-workouts"} element={<ForWorkouts/>}/>
+                    <Route path={"/group-workouts/selected-by-id"} element={<GroupWorkoutDetails/>}/>
+                    <Route path={"/group-workouts/select-workouts-by-schedule"} element={<GroupWorkoutBySchedule/>} />
+                </Route>
             </Route>
             <Route element={<GuestLayouts/>}>
                 <Route path={"/login"} element={<Login/>}/>

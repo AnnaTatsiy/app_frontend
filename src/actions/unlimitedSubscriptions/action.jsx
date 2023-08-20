@@ -1,7 +1,23 @@
 import {toast} from "react-toastify";
 
 import UnlimitedSubscriptionsService from "../../services/unlimitedSubscriptionsService";
-import {ADD_UNLIMITED_SUBSCRIPTION, GET_ALL_UNLIMITED_SUBSCRIPTIONS, GET_UNLIMITED_SUBSCRIPTIONS} from "./action_const";
+import {
+    ADD_UNLIMITED_SUBSCRIPTION,
+    GET_ABOUT_SUBSCRIPTION,
+    GET_ALL_UNLIMITED_SUBSCRIPTIONS,
+    GET_UNLIMITED_SUBSCRIPTIONS
+} from "./action_const";
+
+// получить информацию о абонементе для авторизированного клиента
+export const getAboutSubscription = () =>
+    async (dispatch) => {
+        try {
+            const response = await UnlimitedSubscriptionsService.getAboutSubscription();
+            dispatch({type: GET_ABOUT_SUBSCRIPTION, payload: response.data});
+        } catch (error){
+            toast.error('Возникла ошибка при информацию о абонементе')
+        }
+    };
 
 // получение списка абониментов от сервера
 export const getAllUnlimitedSubscriptions = () =>

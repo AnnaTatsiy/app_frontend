@@ -2,6 +2,11 @@ import api from '../api/axios.js';
 
 class UnlimitedSubscriptionsService{
 
+    //получить информацию о абонементе для авторизированного клиента
+    async getAboutSubscription() {
+        return await api.get('/api/customer/about-subscription');
+    }
+
     // получить список всех абониментов
     async getAllUnlimitedSubscriptions() {
         return await api.get('/api/unlimited-subscriptions/get-all');

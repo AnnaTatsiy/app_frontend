@@ -16,7 +16,8 @@ export const AuthProvider = ({children}) => {
         const content = await response.json();
         setUser({
             name: content.name,
-            email: content.email
+            email: content.email,
+            role: content.role
         });
     }
 
