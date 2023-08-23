@@ -2,11 +2,22 @@ import {toast} from "react-toastify";
 
 import {
     EDIT_GROUP_WORKOUT,
-    FILTERING_GROUP_WORKOUTS,
+    FILTERING_GROUP_WORKOUTS, GET_AVAILABLE_WORKOUTS,
     GET_GROUP_WORKOUT_BY_ID,
     GET_GROUP_WORKOUTS, GET_GROUP_WORKOUTS_BY_SCHEDULE
 } from "./action_const";
 import GroupWorkoutsService from "../../services/groupWorkoutsService";
+
+// получить все доступные тренировки для записи клиента
+export const getAvailableWorkouts = () =>
+    async (dispatch) => {
+        try {
+            const response = await GroupWorkoutsService.getAvailableWorkouts();
+            dispatch({type: GET_AVAILABLE_WORKOUTS, payload: response.data});
+        } catch (error){
+            toast.error('Возникла ошибка при получении доступных тренировок для записи клиента')
+        }
+    };
 
 // получение списка групповых тренировок от сервера постранично
 export const getGroupWorkouts = (number) =>

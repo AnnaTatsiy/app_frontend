@@ -1,4 +1,4 @@
-import {Outlet} from "react-router-dom";
+import {NavLink, Outlet} from "react-router-dom";
 import logo from "../../assets/images/favicon.ico";
 
 export default function CustomerLayouts({user, logout}) {
@@ -14,7 +14,13 @@ export default function CustomerLayouts({user, logout}) {
                         </a>
 
                         <ul className="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                            <li><a href="#" className="nav-link px-2 link-light">Overview</a></li>
+                            <li className="nav-item dropdown">
+                                <a className="nav-link dropdown-toggle link-light" href="#" data-bs-toggle="dropdown" aria-expanded="false">Записаться</a>
+                                <ul className="dropdown-menu dropdown-menu-dark">
+                                    <li><NavLink to="/get-available-workouts" className="dropdown-item">Групповые тренировки</NavLink></li>
+                                    <li><a className="dropdown-item" href="#">Тренировки с тренером</a></li>
+                                </ul>
+                            </li>
                             <li><a href="#" className="nav-link px-2 link-light">Inventory</a></li>
                             <li><a href="#" className="nav-link px-2 link-light">Customers</a></li>
                             <li><a href="#" className="nav-link px-2 link-light">Products</a></li>
@@ -26,9 +32,8 @@ export default function CustomerLayouts({user, logout}) {
                                 <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" className="rounded-circle"/>
                             </a>
                             <ul className="dropdown-menu text-small">
-                                <li><a className="dropdown-item" href="#">New project...</a></li>
                                 <li><a className="dropdown-item" href="#">Settings</a></li>
-                                <li><a className="dropdown-item" href="#">Profile</a></li>
+                                <li><NavLink className="dropdown-item" to={"/"}>Профиль</NavLink></li>
                                 <li><hr className="dropdown-divider"/></li>
                                 <li><button className="dropdown-item" onClick={logout}>Выход</button></li>
                             </ul>

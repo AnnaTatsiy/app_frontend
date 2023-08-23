@@ -96,6 +96,10 @@ p{font-size: 13pt;}
   list-style: none
 }
 
+.min-height-alert{
+  min-height: 150px;
+}
+
 
 
 

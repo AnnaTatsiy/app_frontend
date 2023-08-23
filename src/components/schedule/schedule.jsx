@@ -1,8 +1,8 @@
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
 import {getSchedule} from "../../actions/schedules/action";
-import ScheduleItem from "./scheduleItem";
 import Footer from "../footers/footer.jsx";
+import ScheduleTable from "./scheduleTable.jsx";
 
 export default function Schedule() {
     const dispatch = useDispatch();
@@ -82,145 +82,33 @@ export default function Schedule() {
                             <div className="tab-content" id="myTabContent">
                                 <div className="tab-pane fade show active" id="monday" role="tabpanel"
                                      aria-labelledby="monday-tab">
-                                    <table className={"table mt-3"}>
-                                        <thead>
-                                        <tr>
-                                            <th>Время занятий</th>
-                                            <th>Тип тренировки</th>
-                                            <th>Тренер</th>
-                                            <th>№ Зала</th>
-                                            <th className={"text-primary text-md-center"}>Показать тренировки...</th>
-                                        </tr>
-                                        </thead>
-
-                                        <tbody>
-                                        {workOnMonday.map((item) => (
-                                            <ScheduleItem key={item.id} schedule={item}/>
-                                        ))}
-                                        </tbody>
-                                    </table>
+                                   <ScheduleTable workouts={workOnMonday}/>
                                 </div>
                                 <div className="tab-pane fade" id="tuesday" role="tabpanel"
                                      aria-labelledby="tuesday-tab">
-                                    <table className={"table mt-3"}>
-                                        <thead>
-                                        <tr>
-                                            <th>Время занятий</th>
-                                            <th>Тип тренировки</th>
-                                            <th>Тренер</th>
-                                            <th>№ Зала</th>
-                                            <th className={"text-primary text-md-center"}>Показать тренировки...</th>
-                                        </tr>
-                                        </thead>
-
-                                        <tbody>
-                                        {workOnTuesday.map((item) => (
-                                            <ScheduleItem key={item.id} schedule={item}/>
-                                        ))}
-                                        </tbody>
-                                    </table>
+                                    <ScheduleTable workouts={workOnTuesday}/>
                                 </div>
                                 <div className="tab-pane fade" id="wednesday" role="tabpanel"
                                      aria-labelledby="wednesday-tab">
-                                    <table className={"table mt-3"}>
-                                        <thead>
-                                        <tr>
-                                            <th>Время занятий</th>
-                                            <th>Тип тренировки</th>
-                                            <th>Тренер</th>
-                                            <th>№ Зала</th>
-                                            <th className={"text-primary text-md-center"}>Показать тренировки...</th>
-                                        </tr>
-                                        </thead>
-
-                                        <tbody>
-                                        {workOnWednesday.map((item) => (
-                                            <ScheduleItem key={item.id} schedule={item}/>
-                                        ))}
-                                        </tbody>
-                                    </table>
+                                    <ScheduleTable workouts={workOnWednesday}/>
                                 </div>
 
                                 <div className="tab-pane fade" id="thursday" role="tabpanel"
                                      aria-labelledby="thursday-tab">
-                                    <table className={"table mt-3"}>
-                                        <thead>
-                                        <tr>
-                                            <th>Время занятий</th>
-                                            <th>Тип тренировки</th>
-                                            <th>Тренер</th>
-                                            <th>№ Зала</th>
-                                            <th className={"text-primary text-md-center"}>Показать тренировки...</th>
-                                        </tr>
-                                        </thead>
-
-                                        <tbody>
-                                        {workOnThursday.map((item) => (
-                                            <ScheduleItem key={item.id} schedule={item}/>
-                                        ))}
-                                        </tbody>
-                                    </table>
+                                    <ScheduleTable workouts={workOnThursday}/>
                                 </div>
 
                                 <div className="tab-pane fade" id="friday" role="tabpanel" aria-labelledby="friday-tab">
-                                    <table className={"table mt-3"}>
-                                        <thead>
-                                        <tr>
-                                            <th>Время занятий</th>
-                                            <th>Тип тренировки</th>
-                                            <th>Тренер</th>
-                                            <th>№ Зала</th>
-                                            <th className={"text-primary text-md-center"}>Показать тренировки...</th>
-                                        </tr>
-                                        </thead>
-
-                                        <tbody>
-                                        {workOnFriday.map((item) => (
-                                            <ScheduleItem key={item.id} schedule={item}/>
-                                        ))}
-                                        </tbody>
-                                    </table>
+                                    <ScheduleTable workouts={workOnFriday}/>
                                 </div>
 
                                 <div className="tab-pane fade" id="saturday" role="tabpanel"
                                      aria-labelledby="saturday-tab">
-                                    <table className={"table mt-3"}>
-                                        <thead>
-                                        <tr>
-                                            <th>Время занятий</th>
-                                            <th>Тип тренировки</th>
-                                            <th>Тренер</th>
-                                            <th>№ Зала</th>
-                                            <th className={"text-primary text-md-center"}>Показать тренировки...</th>
-                                        </tr>
-                                        </thead>
-
-                                        <tbody>
-                                        {workOnSaturday.map((item) => (
-                                            <ScheduleItem key={item.id} schedule={item}/>
-                                        ))}
-                                        </tbody>
-                                    </table>
+                                    <ScheduleTable workouts={workOnSaturday}/>
                                 </div>
 
                                 <div className="tab-pane fade" id="sunday" role="tabpanel" aria-labelledby="sunday-tab">
-                                    <table className={"table mt-3"}>
-                                        <thead>
-                                        <tr>
-                                            <th>Время занятий</th>
-                                            <th>Тип тренировки</th>
-                                            <th>Тренер</th>
-                                            <th>№ Зала</th>
-                                            <th className={"text-primary text-md-center"}>Показать тренировки...</th>
-                                        </tr>
-                                        </thead>
-
-                                        <tbody>
-                                        {workOnSunday.map((item) => (
-                                            <ScheduleItem key={item.id} schedule={item}/>
-                                        ))}
-                                        </tbody>
-                                    </table>
+                                    <ScheduleTable workouts={workOnSunday}/>
                                 </div>
 
                             </div>

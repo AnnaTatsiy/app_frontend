@@ -2,6 +2,11 @@ import api from '../api/axios.js';
 
 class GroupWorkoutsService {
 
+    // получить все доступные тренировки для записи клиента
+    async getAvailableWorkouts(){
+        return await api.get(`/api/customer/get-available-workouts`);
+    }
+
     // получить список всех групповых тренировок постранично
     async getAll(number) {
         return await api.get(`/api/group-workouts/all?page=${number}`);

@@ -18,13 +18,13 @@ export default function UnlimitedSubscriptionAbout(){
     return (
         <>
             {subscription && <Alert variant={setStyle}>
-                <Alert.Heading><span className={"ms-5"}>Информация о абонементе:</span></Alert.Heading>
+                <Alert.Heading><span className={"ms-5 fs-5"}>Информация о абонементе:</span></Alert.Heading>
                 <p>
-                    <ul className={"list-style-none m-1 ms-4"}>
+                    <ul className={"list-style-none m-1 ms-4 fs-6"}>
                         <li>Дата оформления: <b>{new Date(subscription.open).toLocaleString().slice(0,10)}</b></li>
                         <li>Период действия: <b>{subscription.unlimited_price_list.validity_period} мес.</b></li>
                         <li>
-                            <ul className={"ms-3 m-1"}>
+                            <ul className={"ms-3 m-1 fs-6"}>
                                 <li>Тариф: <b>{subscription.unlimited_price_list.subscription_type.title}</b></li>
                                 <li>SPA: <b>{subscription.unlimited_price_list.subscription_type.spa === 0 ? "Нет" : "Да"}</b></li>
                                 <li>Бассейн: <b>{subscription.unlimited_price_list.subscription_type.pool === 0 ? "Нет" : "Да"}</b></li>
@@ -34,8 +34,8 @@ export default function UnlimitedSubscriptionAbout(){
                     </ul>
                 </p>
                 <hr />
-                <p className="mb-0 ms-5">
-                    <b>{ setStyle === "success" ? `Абонемент еще активен, срок активности абонемента итекает ${date.toLocaleDateString()}` : "У абонемента истек срок действия!"}</b>
+                <p className="mb-0 ms-5 fs-6">
+                    <b>{ setStyle === "success" ? `Абонемент еще активен, срок активности абонемента итекает ${new Date(date).toLocaleString().slice(0,10)}` : "У абонемента истек срок действия!"}</b>
                 </p>
             </Alert>}
         </>

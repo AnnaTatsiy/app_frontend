@@ -1,6 +1,6 @@
 // начальное состояние
 import {
-    EDIT_GROUP_WORKOUT, FILTERING_GROUP_WORKOUTS,
+    EDIT_GROUP_WORKOUT, FILTERING_GROUP_WORKOUTS, GET_AVAILABLE_WORKOUTS,
     GET_GROUP_WORKOUT_BY_ID,
     GET_GROUP_WORKOUTS, GET_GROUP_WORKOUTS_BY_SCHEDULE
 } from "../../actions/groupWorkouts/action_const";
@@ -10,7 +10,8 @@ const initialState = {
     lastPage: 1,
     selectedPage: 1,
     selectedWorkout: null,
-    isFiltered: null
+    isFiltered: null,
+    availableWorkouts: []
 }
 
 export default function groupWorkoutReducer(state = initialState, action){
@@ -56,6 +57,13 @@ export default function groupWorkoutReducer(state = initialState, action){
                 lastPage: action.payload.last_page,
                 selectedPage: action.payload.current_page,
                 isFiltered: false
+            }
+
+        // получить все доступные тренировки для записи клиента
+        case GET_AVAILABLE_WORKOUTS:
+            return {
+                ...state,
+                availableWorkouts: action.payload
             }
 
         default:

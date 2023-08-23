@@ -10,6 +10,8 @@ import ForWorkouts from "./components/controlledTabs/forWorkouts.jsx";
 import GroupWorkoutDetails from "./components/groupWorkouts/groupWorkoutDetails.jsx";
 import GroupWorkoutBySchedule from "./components/groupWorkouts/groupWorkoutBySchedule.jsx";
 import AdminLayouts from "./components/layouts/adminLayouts.jsx";
+import CustomerLayouts from "./components/layouts/customerLayouts.jsx";
+import AvailableWorkoutsList from "./components/groupWorkouts/availableWorkoutsList.jsx";
 
 function App() {
     return (
@@ -24,6 +26,9 @@ function App() {
                     <Route path={"/group-workouts/selected-by-id"} element={<GroupWorkoutDetails/>}/>
                     <Route path={"/group-workouts/select-workouts-by-schedule"} element={<GroupWorkoutBySchedule/>} />
                 </Route>
+
+                <Route path={"/get-available-workouts"} element={<AvailableWorkoutsList/>}/>
+
             </Route>
             <Route element={<GuestLayouts/>}>
                 <Route path={"/login"} element={<Login/>}/>
