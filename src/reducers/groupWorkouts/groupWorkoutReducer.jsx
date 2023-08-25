@@ -2,7 +2,7 @@
 import {
     EDIT_GROUP_WORKOUT, FILTERING_GROUP_WORKOUTS, GET_AVAILABLE_WORKOUTS,
     GET_GROUP_WORKOUT_BY_ID,
-    GET_GROUP_WORKOUTS, GET_GROUP_WORKOUTS_BY_SCHEDULE
+    GET_GROUP_WORKOUTS, GET_GROUP_WORKOUTS_BY_SCHEDULE, GET_SIGN_UP_WORKOUTS
 } from "../../actions/groupWorkouts/action_const";
 
 const initialState = {
@@ -11,7 +11,8 @@ const initialState = {
     selectedPage: 1,
     selectedWorkout: null,
     isFiltered: null,
-    availableWorkouts: []
+    availableWorkouts: [],
+    signUpWorkouts: []
 }
 
 export default function groupWorkoutReducer(state = initialState, action){
@@ -64,6 +65,12 @@ export default function groupWorkoutReducer(state = initialState, action){
             return {
                 ...state,
                 availableWorkouts: action.payload
+            }
+
+        case GET_SIGN_UP_WORKOUTS:
+            return {
+                ...state,
+                signUpWorkouts: action.payload
             }
 
         default:

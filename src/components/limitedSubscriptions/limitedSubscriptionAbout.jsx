@@ -29,7 +29,7 @@ export default function LimitedSubscriptionAbout() {
                 </p>
                 <hr/>
                 <p className="mb-0 ms-5 fs-6">
-                    <b>{setStyle === "success" ? `Абонемент еще активен, срок активности абонемента итекает ${date.toLocaleDateString()}` : "У абонемента истек срок действия!"}</b>
+                    <b>{setStyle === "success" ? `Абонемент еще активен, срок активности абонемента итекает ${new Date(date).toLocaleString().slice(0, 10)}` : "У абонемента истек срок действия!"}</b>
                 </p>
             </Alert> : <Alert variant={"warning"}>
                 <p className={"fs-6"}>

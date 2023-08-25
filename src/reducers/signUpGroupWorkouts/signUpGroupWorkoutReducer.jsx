@@ -1,7 +1,11 @@
-import {GET_SING_UP_GROUP_WORKOUTS_BY_ID} from "../../actions/signUpGroupWorkouts/action_const";
+import {
+    ADD_SING_UP_GROUP_WORKOUT,
+    GET_SING_UP_GROUP_WORKOUTS_BY_ID
+} from "../../actions/signUpGroupWorkouts/action_const";
 
 const initialState = {
-    list: []
+    list: [],
+    listForCustomer: []
 }
 
 export default function signUpGroupWorkoutReducer(state = initialState, action){
@@ -12,6 +16,12 @@ export default function signUpGroupWorkoutReducer(state = initialState, action){
             return {
                 ...state,
                 list: action.payload
+            }
+
+        case ADD_SING_UP_GROUP_WORKOUT:
+            return {
+                ...state,
+                listForCustomer: [...state.listForCustomer, action.payload] //TODO проверить
             }
 
         default:

@@ -4,9 +4,20 @@ import {
     EDIT_GROUP_WORKOUT,
     FILTERING_GROUP_WORKOUTS, GET_AVAILABLE_WORKOUTS,
     GET_GROUP_WORKOUT_BY_ID,
-    GET_GROUP_WORKOUTS, GET_GROUP_WORKOUTS_BY_SCHEDULE
+    GET_GROUP_WORKOUTS, GET_GROUP_WORKOUTS_BY_SCHEDULE, GET_SIGN_UP_WORKOUTS
 } from "./action_const";
 import GroupWorkoutsService from "../../services/groupWorkoutsService";
+
+// получить все актуальные записи клиента (на которые клиент может прийти)
+export const getSignUpWorkouts = () =>
+    async (dispatch) => {
+        try {
+            const response = await GroupWorkoutsService.getSignUpWorkouts();
+            dispatch({type: GET_SIGN_UP_WORKOUTS, payload: response.data});
+        } catch (error){
+            toast.error('Возникла ошибка при получении тренировок на которые был записан клиент')
+        }
+    };
 
 // получить все доступные тренировки для записи клиента
 export const getAvailableWorkouts = () =>

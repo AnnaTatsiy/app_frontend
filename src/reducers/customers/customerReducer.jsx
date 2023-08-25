@@ -1,6 +1,11 @@
 
 // начальное состояние
-import {ADD_CUSTOMER, EDIT_CUSTOMER, GET_CUSTOMERS, GET_ALL_CUSTOMERS} from "../../actions/customers/action_const";
+import {
+    ADD_CUSTOMER,
+    EDIT_CUSTOMER,
+    GET_CUSTOMERS,
+    GET_ALL_CUSTOMERS,
+} from "../../actions/customers/action_const";
 
 const initialState = {
     list: [],

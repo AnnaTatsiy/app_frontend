@@ -3,7 +3,6 @@ import {useEffect} from "react";
 import {getAvailableWorkouts} from "../../actions/groupWorkouts/action.jsx";
 import Footer from "../footers/footer.jsx";
 import AvailableWorkoutsTabs from "./availableWorkoutsTabs.jsx";
-import {Alert} from "react-bootstrap";
 
 export default function AvailableWorkoutsList() {
 
@@ -17,31 +16,33 @@ export default function AvailableWorkoutsList() {
     //спискок групповых тренировок
     const workouts = useSelector(state => state.groupWorkouts.availableWorkouts);
 
-    console.log(!workouts.message);
+    let worksOnMonday = [];
+    let worksOnTuesday = [];
+    let worksOnWednesday = [];
+    let worksOnThursday = [];
+    let worksOnFriday = [];
+    let worksOnSaturday = [];
+    let worksOnSunday = [];
 
-    if(!workouts.message) {
-        // сортирую тренировки по дням недели
-        const worksOnMonday = workouts.filter(w => w.schedule.day.id === 1).sort((a, b) => a.schedule.time_begin.localeCompare(b.schedule.time_begin)).sort((a, b) => new Date(a.event) - new Date(b.event));
-        const worksOnTuesday = workouts.filter(w => w.schedule.day.id === 2).sort((a, b) => a.schedule.time_begin.localeCompare(b.schedule.time_begin)).sort((a, b) => new Date(a.event) - new Date(b.event));
-        const worksOnWednesday = workouts.filter(w => w.schedule.day.id === 3).sort((a, b) => a.schedule.time_begin.localeCompare(b.schedule.time_begin)).sort((a, b) => new Date(a.event) - new Date(b.event));
-        const worksOnThursday = workouts.filter(w => w.schedule.day.id === 4).sort((a, b) => a.schedule.time_begin.localeCompare(b.schedule.time_begin)).sort((a, b) => new Date(a.event) - new Date(b.event));
-        const worksOnFriday = workouts.filter(w => w.schedule.day.id === 5).sort((a, b) => a.schedule.time_begin.localeCompare(b.schedule.time_begin)).sort((a, b) => new Date(a.event) - new Date(b.event));
-        const worksOnSaturday = workouts.filter(w => w.schedule.day.id === 6).sort((a, b) => a.schedule.time_begin.localeCompare(b.schedule.time_begin)).sort((a, b) => new Date(a.event) - new Date(b.event));
-        const worksOnSunday = workouts.filter(w => w.schedule.day.id === 7).sort((a, b) => a.schedule.time_begin.localeCompare(b.schedule.time_begin)).sort((a, b) => new Date(a.event) - new Date(b.event));
+    // сортирую тренировки по дням недели
+    if(workouts instanceof Array) {
+         worksOnMonday = workouts.filter(w => w.schedule.day.id === 1).sort((a, b) => a.schedule.time_begin.localeCompare(b.schedule.time_begin)).sort((a, b) => new Date(a.event) - new Date(b.event));
+         worksOnTuesday = workouts.filter(w => w.schedule.day.id === 2).sort((a, b) => a.schedule.time_begin.localeCompare(b.schedule.time_begin)).sort((a, b) => new Date(a.event) - new Date(b.event));
+         worksOnWednesday = workouts.filter(w => w.schedule.day.id === 3).sort((a, b) => a.schedule.time_begin.localeCompare(b.schedule.time_begin)).sort((a, b) => new Date(a.event) - new Date(b.event));
+         worksOnThursday = workouts.filter(w => w.schedule.day.id === 4).sort((a, b) => a.schedule.time_begin.localeCompare(b.schedule.time_begin)).sort((a, b) => new Date(a.event) - new Date(b.event));
+         worksOnFriday = workouts.filter(w => w.schedule.day.id === 5).sort((a, b) => a.schedule.time_begin.localeCompare(b.schedule.time_begin)).sort((a, b) => new Date(a.event) - new Date(b.event));
+         worksOnSaturday = workouts.filter(w => w.schedule.day.id === 6).sort((a, b) => a.schedule.time_begin.localeCompare(b.schedule.time_begin)).sort((a, b) => new Date(a.event) - new Date(b.event));
+         worksOnSunday = workouts.filter(w => w.schedule.day.id === 7).sort((a, b) => a.schedule.time_begin.localeCompare(b.schedule.time_begin)).sort((a, b) => new Date(a.event) - new Date(b.event));
     }
 
     return (
-
         <>
             <div className="container-fluid">
                 <div className="row-sm mt-5 p-3 container-fluid-style">
                     <div className="p-4 bg-white m-3 border-warning-top border-warning-bottom">
                         <div className="container">
-                            {!workouts.message ? <>
-                                {!worksOnMonday ? <>
-                                    Загрузка...
-
-                                </> : <> <ul className="nav nav-pills mb-3" id="myTab" role="tablist">
+                            {(workouts instanceof Array && worksOnSunday.length !== 0) ?
+                               <> <ul className="nav nav-pills mb-3" id="myTab" role="tablist">
                                     <li className="nav-item" role="presentation">
                                         <button className="nav-link active" id="monday-tab" data-bs-toggle="pill"
                                                 data-bs-target="#monday"
@@ -122,14 +123,8 @@ export default function AvailableWorkoutsList() {
                                             <AvailableWorkoutsTabs workouts={worksOnSunday}/>
                                         </div>
 
-                                    </div></>}
-                               </> : <>
-                                <Alert variant={"danger"}>
-                                    <p>
-                                        <b>Ошибка: </b>{workouts.message}
-                                    </p>
-                                </Alert>
-                            </>}
+                                    </div>
+                               </> : (workouts) ? <>{workouts}</> : <>Загрузка...</>}
                         </div>
                     </div>
                 </div>

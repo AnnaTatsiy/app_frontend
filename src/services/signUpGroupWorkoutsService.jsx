@@ -6,6 +6,9 @@ class SignUpGroupWorkoutsService{
     async getById(id) {
         return await api.get(`/api/sign-up-group-workouts/select-by-workout-id/${id}`);
     }
+    async add(id) {
+        return api.post(`/api/customer/sign-up`, id);
+    }
 
 }
 export default new SignUpGroupWorkoutsService();

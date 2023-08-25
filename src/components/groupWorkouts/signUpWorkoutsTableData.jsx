@@ -1,15 +1,14 @@
-import {Button, Form, FormControl} from "react-bootstrap";
-import {useForm} from "react-hook-form";
 import {useDispatch} from "react-redux";
-import {addSignUpGroupWorkout} from "../../actions/signUpGroupWorkouts/action.jsx";
+import {useForm} from "react-hook-form";
+import {Button, Form, FormControl} from "react-bootstrap";
 
-export default function AvailableWorkoutsTableData({workout}) {
+export default  function SignUpWorkoutsTableData({workout}){
     const dispatch = useDispatch();
     const {handleSubmit, register} = useForm();
 
     // отправка данных на сервер
     function submitForm(data) {
-        dispatch(addSignUpGroupWorkout(data));
+        //dispatch(addSignUpGroupWorkout(data));
     }
 
     return (
@@ -30,7 +29,7 @@ export default function AvailableWorkoutsTableData({workout}) {
                             readOnly={true}
                             hidden={true}/>
 
-                        <Button variant="success" type="submit">Записаться</Button>
+                        <Button variant="danger" type="submit">Отменить</Button>
                     </Form>
                 </td>
             </tr>
