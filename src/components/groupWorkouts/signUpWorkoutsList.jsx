@@ -31,7 +31,7 @@ export default function SignUpWorkoutsList(){
                 </thead>
 
                 <tbody>
-                {workouts.filter((a) => a.event === workouts[0].event).map((item) => (
+                {workouts.map((item) => (
                     <SignUpWorkoutsTableData key={item.id} workout={item}/>
                 ))}
                 </tbody>

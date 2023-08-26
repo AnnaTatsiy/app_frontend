@@ -8,13 +8,13 @@ export default function AvailableWorkoutsList() {
 
     const dispatch = useDispatch();
 
+    //спискок групповых тренировок
+    const workouts = useSelector(state => state.groupWorkouts.availableWorkouts);
+
     // вызов ф-ии получения списка групповых тренировок от сервера
     useEffect(() => {
         dispatch(getAvailableWorkouts())
     }, [dispatch])
-
-    //спискок групповых тренировок
-    const workouts = useSelector(state => state.groupWorkouts.availableWorkouts);
 
     let worksOnMonday = [];
     let worksOnTuesday = [];
@@ -129,6 +129,7 @@ export default function AvailableWorkoutsList() {
                     </div>
                 </div>
             </div>
+
             <Footer/>
         </>
     );

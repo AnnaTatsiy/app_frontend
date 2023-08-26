@@ -45,7 +45,6 @@ export default function CoachesList() {
     const [searchValue, setSearchValue] = useState('');
 
     const onClickForFormEdit = (id) => {
-
         setFormModalShow(true);
         setIsAddForm(false);
         coach.current = viewCoaches.filter((item) => item.id === id)[0];

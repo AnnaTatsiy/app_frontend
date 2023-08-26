@@ -1,6 +1,7 @@
 import {useDispatch} from "react-redux";
 import {useForm} from "react-hook-form";
 import {Button, Form, FormControl} from "react-bootstrap";
+import {deleteSignUpGroupWorkout} from "../../actions/signUpGroupWorkouts/action.jsx";
 
 export default  function SignUpWorkoutsTableData({workout}){
     const dispatch = useDispatch();
@@ -8,7 +9,7 @@ export default  function SignUpWorkoutsTableData({workout}){
 
     // отправка данных на сервер
     function submitForm(data) {
-        //dispatch(addSignUpGroupWorkout(data));
+        dispatch(deleteSignUpGroupWorkout(data));
     }
 
     return (

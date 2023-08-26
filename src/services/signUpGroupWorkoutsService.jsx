@@ -10,5 +10,8 @@ class SignUpGroupWorkoutsService{
         return api.post(`/api/customer/sign-up`, id);
     }
 
+    async delete(id) {
+        return api.post(`/api/customer/delete-sign-up`, id);
+    }
 }
 export default new SignUpGroupWorkoutsService();
