@@ -16,7 +16,7 @@ export default function LimitedSubscriptionAbout() {
 
     return (
         <>
-            {subscription ? <Alert variant={setStyle}>
+            {subscription && subscription.limited_price_list ? <Alert variant={setStyle}>
                 <Alert.Heading><span className={"ms-5 fs-5"}>Информация о абонементе с тренером:</span></Alert.Heading>
                 <p>
                     <ul className={"list-style-none m-1 ms-4 fs-6"}>

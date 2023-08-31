@@ -5,9 +5,10 @@ const AuthContext = createContext({});
 
 export const AuthProvider = ({children}) => {
     const [user, setUser] = useState(null)
+    const [errors, setErrors] = useState(null);
     const navigate = useNavigate();
 
-    const getUser = async () =>{
+    const getUser = async () => {
         const response = await fetch('http://127.0.0.1:8000/api/user', {
             headers: {"Content-type": "application/json"},
             credentials: 'include',
@@ -23,7 +24,7 @@ export const AuthProvider = ({children}) => {
 
     const login = async ({email, password}) => {
 
-        await fetch('http://127.0.0.1:8000/api/login', {
+     const res =   await fetch('http://127.0.0.1:8000/api/login', {
             method: 'POST',
             headers: {"Content-type": "application/json"},
             credentials: 'include',
@@ -33,10 +34,14 @@ export const AuthProvider = ({children}) => {
                     password
                 }
             )
-        })
+        });
 
-        await getUser();
-        navigate('/');
+        if (res.ok) {
+            await getUser();
+            navigate('/');
+        } else {
+            setErrors(res.status)
+        }
     }
 
     const logout = async () => {
@@ -47,19 +52,20 @@ export const AuthProvider = ({children}) => {
         });
 
         setUser(null);
+        setErrors(null);
     }
 
     useEffect(() => {
-        if(!user){
+        if (!user) {
             getUser();
         }
     }, [getUser, user]);
 
-    return <AuthContext.Provider value={{user, getUser, login, logout}}>
+    return <AuthContext.Provider value={{user, getUser, login, logout, errors}}>
         {children}
     </AuthContext.Provider>
 }
 
-export default function useAuthContext(){
+export default function useAuthContext() {
     return useContext(AuthContext);
 }

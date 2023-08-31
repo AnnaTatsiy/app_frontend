@@ -1,10 +1,12 @@
 import {useState} from "react";
 import useAuthContext from "./context/authContext.jsx";
+import {Alert} from "react-bootstrap";
+
 export default function Login() {
 
     const [email, setEmail] = useState('');
     const [password, setPassword]  = useState('');
-    const {login} = useAuthContext()
+    const {login, errors} = useAuthContext()
 
     const submit = async (e) =>{
         e.preventDefault();
@@ -18,12 +20,16 @@ export default function Login() {
             <form onSubmit={submit}>
                     <h1 className="h3 mb-3 fw-normal">Пожалуйста войдите</h1>
 
+                {errors &&
+                    <Alert variant={"danger"}>Некорректный логин или пароль</Alert>
+                }
+
                     <div className="form-floating">
-                        <input onChange={e => setEmail(e.target.value)} type="email" className="form-control" placeholder="name@example.com"/>
+                        <input id={"emailInput"} onChange={e => setEmail(e.target.value)} required={true} type="email" className="form-control" placeholder="name@example.com"/>
                             <label htmlFor="floatingInput">Электронная почта</label>
                     </div>
                     <div className="form-floating mt-2">
-                        <input onChange={e => setPassword(e.target.value)} type="password" className="form-control"  placeholder="Password"/>
+                        <input onChange={e => setPassword(e.target.value)} required={true} type="password" className="form-control"  placeholder="Password"/>
                             <label htmlFor="floatingPassword">Пароль</label>
                     </div>
 

@@ -2,14 +2,17 @@ import {Button, Form, FormControl} from "react-bootstrap";
 import {useForm} from "react-hook-form";
 import {useDispatch} from "react-redux";
 import {addSignUpGroupWorkout} from "../../actions/signUpGroupWorkouts/action.jsx";
+import {useState} from "react";
 
 export default function AvailableWorkoutsTableData({workout}) {
     const dispatch = useDispatch();
     const {handleSubmit, register} = useForm();
+    const [disable, setDisable] = useState(false);
 
     // отправка данных на сервер
     function submitForm(data) {
         dispatch(addSignUpGroupWorkout(data));
+        setDisable(true);
     }
 
     return (
@@ -28,9 +31,10 @@ export default function AvailableWorkoutsTableData({workout}) {
                             type="number"
                             value={workout.id}
                             readOnly={true}
-                            hidden={true}/>
+                            hidden={true}
+                            />
 
-                        <Button variant="success" type="submit">Записаться</Button>
+                        <Button disabled={disable} variant="success" type="submit">Записаться</Button>
                     </Form>
                 </td>
             </tr>
