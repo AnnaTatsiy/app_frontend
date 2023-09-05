@@ -100,6 +100,18 @@ p{font-size: 13pt;}
   min-height: 150px;
 }
 
+.max-width-input{
+  max-width: 700px;
+}
+
+.font-size-user{
+  font-size: 13pt;
+}
+
+.object-fit-image{
+  object-fit: contain;
+}
+
 
 
 

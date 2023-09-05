@@ -1,10 +1,12 @@
 import {createContext, useState, useContext, useEffect} from "react";
 import {useNavigate} from "react-router-dom";
+import api from "../../api/axios.js";
 
 const AuthContext = createContext({});
 
 export const AuthProvider = ({children}) => {
     const [user, setUser] = useState(null)
+    const [image, setImage] = useState(null);
     const [errors, setErrors] = useState(null);
     const navigate = useNavigate();
 
@@ -56,12 +58,30 @@ export const AuthProvider = ({children}) => {
     }
 
     useEffect(() => {
+        if(!image){
+            getImage();
+        }
+    }, [image]);
+
+    useEffect(() => {
         if (!user) {
             getUser();
         }
     }, [getUser, user]);
 
-    return <AuthContext.Provider value={{user, getUser, login, logout, errors}}>
+    const getImage = () => {
+        api.get("http://127.0.0.1:8000/api/get-image")
+            .then((response) => {
+                if (response.status === 200) {
+                    setImage(response.data.data);
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    };
+
+    return <AuthContext.Provider value={{user, getUser, login, logout, errors, image, getImage}}>
         {children}
     </AuthContext.Provider>
 }

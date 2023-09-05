@@ -1,12 +1,16 @@
 import {Button, FloatingLabel, Form, FormControl, Modal, Row} from "react-bootstrap";
 import {useDispatch} from "react-redux";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
 import {addCoach, editCoach} from "../../actions/coaches/action";
 
 // компонент для добавления/редактирования клиента в модальном окне
 export default function CoachFormModal(props) {
     const dispatch = useDispatch();
+
+    const [valuePassport, setValuePassport] = useState(null);
+    const [valueNumber, setValueNumber] = useState(null);
+    const [valueEmail, setValueEmail] = useState(null);
 
     // методы для управления формой
     const {handleSubmit, register, reset, formState: {errors}} = useForm();
@@ -45,6 +49,33 @@ export default function CoachFormModal(props) {
         data.id === 0 ? dispatch(addCoach(data)) : dispatch(editCoach(data));
         reset();
         props.onHide();
+    }
+
+    const checkingUniqueNumber = async (value) => {
+        const response =  await fetch(`http://127.0.0.1:8000/api/coaches/checking-unique-number/${value}`, {
+            headers: {"Content-type": "application/json"},
+            credentials: 'include'
+        })
+        const content = await response.json();
+        setValueNumber(content.result < 1);
+    }
+
+    const checkingUniqueEmail = async (value) => {
+        const response =  await fetch(`http://127.0.0.1:8000/api/coaches/checking-unique-email/${value}`, {
+            headers: {"Content-type": "application/json"},
+            credentials: 'include'
+        })
+        const content = await response.json();
+        setValueEmail(content.result < 1);
+    }
+
+    const checkingUniquePassport = async (value) => {
+        const response =  await fetch(`http://127.0.0.1:8000/api/coaches/checking-unique-passport/${value}`, {
+            headers: {"Content-type": "application/json"},
+            credentials: 'include'
+        })
+        const content = await response.json();
+        setValuePassport(content.result < 1);
     }
 
     return (<>
@@ -190,6 +221,11 @@ export default function CoachFormModal(props) {
                                     pattern: {
                                         value: /^[A-Z0-9_]+$/,
                                         message: "Номер и серия паспорта не может содержать пробельные символы и знаки препинания!"
+                                    },
+
+                                    validate: value => {
+                                        checkingUniquePassport(value).then(r => r);
+                                        return valuePassport || 'Тренер с данным номером-серии паспорта уже зарегистрирован!'
                                     }
 
                                 })}
@@ -238,6 +274,11 @@ export default function CoachFormModal(props) {
                                     pattern: {
                                         value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                                         message: "Некорректный email адрес!"
+                                    },
+
+                                    validate: value => {
+                                        checkingUniqueEmail(value).then(r => r);
+                                        return valueEmail || 'Тренер с данной почтой уже зарегистрирован!'
                                     }
 
                                 })}
@@ -262,6 +303,11 @@ export default function CoachFormModal(props) {
                                     pattern: {
                                         value: /^\+?[78][-\(]?\d{3}\)?-?\d{3}-?\d{2}-?\d{2}$/,
                                         message: "Некорректный номер телефона!"
+                                    },
+
+                                    validate: value => {
+                                        checkingUniqueNumber(value).then(r => r);
+                                        return valueNumber || 'Тренер с данным номером телефона уже зарегистрирован!'
                                     }
 
                                 })}

@@ -1,12 +1,16 @@
 import {Button, FloatingLabel, Form, FormControl, Modal, Row} from "react-bootstrap";
 import {useDispatch} from "react-redux";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
 import {addCustomer, editCustomer} from "../../actions/customers/action";
 
 // компонент для добавления/редактирования клиента в модальном окне
 export default function CustomerFormModal(props) {
     const dispatch = useDispatch();
+
+    const [valuePassport, setValuePassport] = useState(null);
+    const [valueNumber, setValueNumber] = useState(null);
+    const [valueEmail, setValueEmail] = useState(null);
 
     // методы для управления формой
     const {handleSubmit, register, reset, formState: {errors}} = useForm();
@@ -47,6 +51,33 @@ export default function CustomerFormModal(props) {
         props.onHide();
     }
 
+    const checkingUniqueNumber = async (value) => {
+        const response =  await fetch(`http://127.0.0.1:8000/api/customers/checking-unique-number/${value}`, {
+            headers: {"Content-type": "application/json"},
+            credentials: 'include'
+        })
+        const content = await response.json();
+        setValueNumber(content.result < 1);
+    }
+
+    const checkingUniqueEmail = async (value) => {
+        const response =  await fetch(`http://127.0.0.1:8000/api/customers/checking-unique-email/${value}`, {
+            headers: {"Content-type": "application/json"},
+            credentials: 'include'
+        })
+        const content = await response.json();
+        setValueEmail(content.result < 1);
+    }
+
+    const checkingUniquePassport = async (value) => {
+        const response =  await fetch(`http://127.0.0.1:8000/api/customers/checking-unique-passport/${value}`, {
+            headers: {"Content-type": "application/json"},
+            credentials: 'include'
+        })
+        const content = await response.json();
+        setValuePassport(content.result < 1);
+    }
+
     return (<>
         <Modal
             {...props}
@@ -82,7 +113,7 @@ export default function CustomerFormModal(props) {
                                         message: "Фамилия клиента не может быть длинее 50 символов!"
                                     },
 
-                                    minLength:{
+                                    minLength: {
                                         value: 2,
                                         message: "Фамилия клиента не может состоять из 1 символа!"
                                     },
@@ -116,7 +147,7 @@ export default function CustomerFormModal(props) {
                                         message: "Имя клиента не может быть длинее 50 символов!"
                                     },
 
-                                    minLength:{
+                                    minLength: {
                                         value: 2,
                                         message: "Имя клиента не может состоять из 1 символа!"
                                     },
@@ -149,7 +180,7 @@ export default function CustomerFormModal(props) {
                                         message: "Отчество клиента не может быть длинее 50 символов!"
                                     },
 
-                                    minLength:{
+                                    minLength: {
                                         value: 2,
                                         message: "Отчество клиента не может состоять из 1 символа!"
                                     },
@@ -182,7 +213,7 @@ export default function CustomerFormModal(props) {
                                         message: "Номер и серия паспорта не может быть длинее 10 символов!"
                                     },
 
-                                    minLength:{
+                                    minLength: {
                                         value: 7,
                                         message: "Номер и серия паспорта не может быть короче 7 символов!"
                                     },
@@ -190,8 +221,12 @@ export default function CustomerFormModal(props) {
                                     pattern: {
                                         value: /^[A-Z0-9_]+$/,
                                         message: "Номер и серия паспорта не может содержать пробельные символы и знаки препинания!"
-                                    }
+                                    },
 
+                                    validate: value => {
+                                        checkingUniquePassport(value).then(r => r);
+                                        return valuePassport || 'Клиент с данным номером-серии паспорта уже зарегистрирован!'
+                                    }
                                 })}
                                 isInvalid={!!errors.passport}>
                             </FormControl>
@@ -211,7 +246,7 @@ export default function CustomerFormModal(props) {
                                         message: "Дата рождения клиента должна быть указана!"
                                     },
 
-                                    validate:{
+                                    validate: {
                                         positive: (v) => new Date(v) < (new Date(new Date().getFullYear() - 14, new Date().getMonth(), new Date().getDate())) || 'Клиенту должно исполниться 14 лет!',
                                         lessThanTen: (v) => new Date(v) > (new Date(new Date().getFullYear() - 100, new Date().getMonth(), new Date().getDate())) || 'Клиент должен быть моложе 100 лет!',
                                     }
@@ -238,6 +273,11 @@ export default function CustomerFormModal(props) {
                                     pattern: {
                                         value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                                         message: "Некорректный email адрес!"
+                                    },
+
+                                    validate: value => {
+                                        checkingUniqueEmail(value).then(r => r);
+                                        return valueEmail || 'Клиент с данной почтой уже зарегистрирован!'
                                     }
 
                                 })}
@@ -262,6 +302,11 @@ export default function CustomerFormModal(props) {
                                     pattern: {
                                         value: /^\+?[78][-\(]?\d{3}\)?-?\d{3}-?\d{2}-?\d{2}$/,
                                         message: "Некорректный номер телефона!"
+                                    },
+
+                                    validate: value => {
+                                        checkingUniqueNumber(value).then(r => r);
+                                        return valueNumber || 'Клиент с данным номером телефона уже зарегистрирован!'
                                     }
 
                                 })}
@@ -288,7 +333,7 @@ export default function CustomerFormModal(props) {
                                         message: "Место проживания клиента не может быть длинее 250 символов!"
                                     },
 
-                                    minLength:{
+                                    minLength: {
                                         value: 15,
                                         message: "Место проживания клиента не может быть короче 15 символов!"
                                     }
