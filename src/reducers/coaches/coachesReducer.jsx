@@ -1,11 +1,12 @@
 
 // начальное состояние
-import {ADD_COACH, EDIT_COACH, GET_COACHES, GET_ALL_COACHES} from "../../actions/coaches/action_const";
+import {ADD_COACH, EDIT_COACH, GET_COACHES, GET_ALL_COACHES, GET_COACH} from "../../actions/coaches/action_const";
 
 const initialState = {
     list: [],
     lastPage: 1,
-    dataList: []
+    dataList: [],
+    authCoach: null
 }
 
 export default function coachesReducer(state = initialState, action){
@@ -42,6 +43,12 @@ export default function coachesReducer(state = initialState, action){
                 ...state,
                 list: state.list.map(coach => coach.id === updatedCoach.id ? updatedCoach : coach),
                 dataList: state.dataList.map(coach => coach.id === updatedCoach.id ? updatedCoach : coach),
+            }
+
+        case GET_COACH:
+            return {
+                ...state,
+                authCoach: action.payload
             }
 
         default:

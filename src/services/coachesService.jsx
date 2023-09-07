@@ -2,6 +2,11 @@ import api from '../api/axios.js';
 
 class CoachesService {
 
+    //получение авторизированного тренера
+    async getCoach() {
+        return await api.get('/api/coach/get-coach');
+    }
+
     // получить список всех тренеров
     async getAllCoaches() {
         return await api.get('/api/coaches/get-all');

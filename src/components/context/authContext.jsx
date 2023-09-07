@@ -40,6 +40,7 @@ export const AuthProvider = ({children}) => {
 
         if (res.ok) {
             await getUser();
+            await getImage();
             navigate('/');
         } else {
             setErrors(res.status)

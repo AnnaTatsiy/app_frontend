@@ -10,7 +10,7 @@ export default class Image extends Component {
             responseMsg: {
                 status: "",
                 message: "",
-                error: "",
+                errors: "",
             },
         };
     }
@@ -48,7 +48,7 @@ export default class Image extends Component {
                         responseMsg: {
                             status: response.data.status,
                             message: response.data.message,
-                            error: response.data.error
+                            errors: response.data.errors
                         },
                     });
                     setTimeout(() => {
@@ -86,14 +86,14 @@ export default class Image extends Component {
                                         onChange={this.handleChange}
                                         className="form-control"
                                     />
-                                    <div className="text-danger mt-2 ms-1">
-                                        {this.state.responseMsg.status === "successs" ? (
-                                            <div>
-                                                {this.state.responseMsg.error}
+                                    <div className="mt-2 ms-1">
+                                        {this.state.responseMsg.status === "success" ? (
+                                            <div className={"text-success"}>
+                                                {this.state.responseMsg.message}
                                             </div>
                                         ) : this.state.responseMsg.status === "failed" ? (
-                                            <div>
-                                                {this.state.responseMsg.error}
+                                            <div className={"text-danger"}>
+                                                {this.state.responseMsg.errors}
                                             </div>
                                         ) : (
                                             ""

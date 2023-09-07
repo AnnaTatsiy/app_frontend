@@ -1,7 +1,18 @@
 import {toast} from "react-toastify";
 
 import CoachesService from "../../services/coachesService.jsx";
-import {GET_COACHES, ADD_COACH, EDIT_COACH, GET_ALL_COACHES} from "./action_const";
+import {GET_COACHES, ADD_COACH, EDIT_COACH, GET_ALL_COACHES, GET_COACH} from "./action_const";
+
+//получение авторизированного тренера
+export const getCoach = () =>
+    async (dispatch) => {
+        try {
+            const response = await CoachesService.getCoach();
+            dispatch({type: GET_COACH, payload: response.data});
+        } catch (error){
+            //toast.error('Возникла ошибка при получении информации о тренере')
+        }
+    };
 
 // получение списка клиентов от сервера
 export const getAllCoaches = () =>
