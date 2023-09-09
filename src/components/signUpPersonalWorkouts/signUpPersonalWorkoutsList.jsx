@@ -30,7 +30,15 @@ export default function SignUpPersonalWorkoutsList(){
     let [filterModalShow, setFilterModalShow] = useState(false);
     
     //спискок тренировок
-    const workouts = useSelector(state => state.signUpPersonalWorkouts.list)
+    const workouts = useSelector(state => state.signUpPersonalWorkouts.list);
+    // .sort((a,b) => a.schedule.time_begin.localeCompare(b.schedule.time_begin))
+    const sorted = (workouts !== undefined) ? [...workouts]
+        .sort(function (a,b){
+            if(b.date_begin === a.date_begin){
+                return b.schedule.time_begin.localeCompare(a.schedule.time_begin);
+            }
+            return b.date_begin - a.date_begin
+        } ) : undefined
     //номер последней страницы
     const lastPage = useSelector(state => state.signUpPersonalWorkouts.lastPage);
 
@@ -41,11 +49,11 @@ export default function SignUpPersonalWorkoutsList(){
                 <Button variant={"primary"}  onClick={() => setFilterModalShow(true)}>Открыть фильтр</Button>
             </div>
 
-            {workouts !== undefined &&
+            {sorted !== undefined &&
                 <Table>
                     <thead>
                     <tr>
-                        <th>День</th>
+                        <th>Дата</th>
                         <th>Время</th>
                         <th>Серия-номер тренера</th>
                         <th>Тренер</th>
@@ -54,13 +62,13 @@ export default function SignUpPersonalWorkoutsList(){
                     </tr>
                     </thead>
                     <tbody>
-                    {workouts.map((item) => (
+                    {sorted.map((item) => (
                         <SignUpPersonalWorkoutTableData key={item.id} workout={item}/>
                     ))}
                     </tbody>
                 </Table>}
 
-            {workouts === undefined &&
+            {sorted === undefined &&
                 <Alert variant={"secondary"} className={"not-fount"}><p>
                     По вашему запросу ничего не найдено!
                 </p>

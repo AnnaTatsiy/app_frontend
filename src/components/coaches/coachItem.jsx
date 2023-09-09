@@ -1,7 +1,8 @@
 // компонент вывода одного клиента
 
-import {PencilFill} from "react-bootstrap-icons";
+import {InfoSquareFill, PencilFill} from "react-bootstrap-icons";
 import {Button} from "react-bootstrap";
+import {NavLink} from "react-router-dom";
 
 export default function CoachItem({coach, onClick}){
     return (
@@ -12,9 +13,15 @@ export default function CoachItem({coach, onClick}){
                 <td>{coach.number}</td>
                 <td>{coach.mail}</td>
                 <td>{coach.registration}</td>
-                <td>
-                    <Button variant={"primary"} onClick={() => onClick(coach.id)}>
+                <td className={"text-md-center"}>
+                    <Button variant={"success"} className={"fs-6"} onClick={() => onClick(coach.id)}>
                         <PencilFill/></Button>
+                </td>
+                <td className={"text-md-center"}>
+                    <NavLink className={"fs-3"} to={`/personal-workouts/select-workouts-by-coach?id=${coach.id}&page=2`}
+                             placeholder={"Показать тренировки..."}>
+                        <InfoSquareFill/>
+                    </NavLink>
                 </td>
             </tr>
         </>

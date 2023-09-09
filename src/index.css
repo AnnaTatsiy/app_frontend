@@ -100,6 +100,25 @@ p{font-size: 13pt;}
   min-height: 150px;
 }
 
+.min-height-container{
+  min-height: 500px;
+  position: relative
+}
+
+.custom-paginate{
+  bottom: 0;
+  right: 0;
+  position: absolute;
+}
+
+.max-width-col{
+  width: 72px;
+}
+
+.max-height-col{
+  height: 72px;
+}
+
 .max-width-input{
   max-width: 700px;
 }

@@ -11,6 +11,7 @@ import GroupWorkoutDetails from "./components/groupWorkouts/groupWorkoutDetails.
 import GroupWorkoutBySchedule from "./components/groupWorkouts/groupWorkoutBySchedule.jsx";
 import AvailableWorkoutsList from "./components/groupWorkouts/availableWorkoutsList.jsx";
 import Settings from "./components/settings.jsx";
+import SignUpPersonalWorkoutsByCoach from "./components/signUpPersonalWorkouts/signUpPersonalWorkoutsByCoach.jsx";
 
 function App() {
     return (
@@ -26,6 +27,7 @@ function App() {
                 <Route path={"/group-workouts/select-workouts-by-schedule"} element={<GroupWorkoutBySchedule/>}/>
                 <Route path={"/settings"} element={<Settings/>}></Route>
 
+                <Route path={"/personal-workouts/select-workouts-by-coach"} element={<SignUpPersonalWorkoutsByCoach/>}/>
 
                 <Route path={"/get-available-workouts"} element={<AvailableWorkoutsList/>}/>
 

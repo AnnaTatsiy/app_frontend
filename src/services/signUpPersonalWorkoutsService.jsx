@@ -7,6 +7,11 @@ class SignUpPersonalWorkoutsService{
         return await api.get(`/api/sign-up-personal-workouts/all?page=${number}`);
     }
 
+    // получить список тренировок заданного тренера постранично
+    async getAllByCoach(id, page){
+        return await api.get(`/api/sign-up-personal-workouts/get-sign-up-personal-workouts-by-coach/${id}/${page}`);
+    }
+
     //фильтрация
     async filtering(params){
         return api.get('/api/sign-up-personal-workouts/filtered/',

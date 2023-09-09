@@ -107,7 +107,8 @@ export default function CoachesList() {
                     <th>Номер телефона</th>
                     <th>Эл. почта</th>
                     <th>Место проживания</th>
-                    <th></th>
+                    <th>Редактировать</th>
+                    <th>Показать тренировки</th>
                 </tr>
                 </thead>
                 <tbody>
