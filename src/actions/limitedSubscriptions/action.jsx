@@ -15,7 +15,7 @@ export const getAboutLimitedSubscription = () =>
             const response = await LimitedSubscriptionsService.getAboutSubscription();
             dispatch({type: GET_ABOUT_LIMITED_SUBSCRIPTION, payload: response.data});
         } catch (error){
-            toast.error('Возникла ошибка при информацию о абонементе с тренером')
+            //toast.error('Возникла ошибка при информацию о абонементе с тренером')
         }
     };
 
@@ -26,7 +26,7 @@ export const getAllLimitedSubscriptions = () =>
             const response = await LimitedSubscriptionsService.getAllLimitedSubscriptions();
             dispatch({type: GET_ALL_LIMITED_SUBSCRIPTIONS, payload: response.data});
         } catch (error){
-            toast.error('Возникла ошибка при получении подписок на тренировки с тренером')
+            //toast.error('Возникла ошибка при получении подписок на тренировки с тренером')
         }
     };
 
@@ -37,7 +37,7 @@ export const getLimitedSubscriptions = (number) =>
             const response = await LimitedSubscriptionsService.getAll(number);
             dispatch({type: GET_LIMITED_SUBSCRIPTIONS, payload: response.data});
         } catch (error){
-            toast.error('Возникла ошибка при получении подписок на тренировки с тренером')
+           // toast.error('Возникла ошибка при получении подписок на тренировки с тренером')
         }
     };
 

@@ -9,7 +9,7 @@ export const getAllLimitedPriceLists = () =>
             const response = await LimitedPriceListsService.getAllLimitedPriceLists();
             dispatch({type: GET_ALL_LIMITED_PRICE_LISTS, payload: response.data});
         } catch (error){
-            toast.error('Возникла ошибка при получении прайс листа на тренировки с тренером')
+           // toast.error('Возникла ошибка при получении прайс листа на тренировки с тренером')
         }
     };
 
@@ -20,6 +20,6 @@ export const getLimitedPriceLists = (number) =>
             const response = await LimitedPriceListsService.getAll(number);
             dispatch({type: GET_LIMITED_PRICE_LISTS, payload: response.data});
         } catch (error){
-            toast.error('Возникла ошибка при получении прайс листа на тренировки с тренером')
+           // toast.error('Возникла ошибка при получении прайс листа на тренировки с тренером')
         }
     };

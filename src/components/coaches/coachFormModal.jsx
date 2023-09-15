@@ -8,7 +8,7 @@ import {addCoach, editCoach} from "../../actions/coaches/action";
 export default function CoachFormModal(props) {
     const dispatch = useDispatch();
 
-    const [valuePassport, setValuePassport] = useState(null);
+    const [valuePassport, setValuePassport] = useState(true);
     const [valueNumber, setValueNumber] = useState(null);
     const [valueEmail, setValueEmail] = useState(null);
 
@@ -42,13 +42,23 @@ export default function CoachFormModal(props) {
                 registration: props.coach.registration
             })
         }
+
+        setValueEmail(null);
+        setValueNumber(null);
+        setValuePassport(true);
+
     }, [props.add, props.coach, props.show, reset]);
 
     // отправка данных на сервер
     function submitCoachForm(data) {
-        data.id === 0 ? dispatch(addCoach(data)) : dispatch(editCoach(data));
-        reset();
-        props.onHide();
+        console.log(data.passport);
+        checkingUniquePassport(data.passport).then(r => r)
+        console.log(valuePassport);
+        if(valuePassport){
+            data.id === 0 ? dispatch(addCoach(data)) : dispatch(editCoach(data));
+            reset();
+            props.onHide();
+        }
     }
 
     const checkingUniqueNumber = async (value) => {
@@ -57,7 +67,7 @@ export default function CoachFormModal(props) {
             credentials: 'include'
         })
         const content = await response.json();
-        setValueNumber(content.result < 1);
+        setValueNumber(content.result);
     }
 
     const checkingUniqueEmail = async (value) => {
@@ -66,7 +76,7 @@ export default function CoachFormModal(props) {
             credentials: 'include'
         })
         const content = await response.json();
-        setValueEmail(content.result < 1);
+        setValueEmail(content.result);
     }
 
     const checkingUniquePassport = async (value) => {
@@ -75,7 +85,7 @@ export default function CoachFormModal(props) {
             credentials: 'include'
         })
         const content = await response.json();
-        setValuePassport(content.result < 1);
+        setValuePassport(content.result);
     }
 
     return (<>
@@ -223,10 +233,7 @@ export default function CoachFormModal(props) {
                                         message: "Номер и серия паспорта не может содержать пробельные символы и знаки препинания!"
                                     },
 
-                                    validate: value => {
-                                        checkingUniquePassport(value).then(r => r);
-                                        return valuePassport || 'Тренер с данным номером-серии паспорта уже зарегистрирован!'
-                                    }
+                                    validate:  value => valuePassport || 'Тренер с данным номером-серии паспорта уже зарегистрирован!'
 
                                 })}
                                 isInvalid={!!errors.passport}>

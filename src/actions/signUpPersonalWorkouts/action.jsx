@@ -14,7 +14,7 @@ export const getSignUpPersonalWorkoutsByCoach = (id, page) =>
             const response = await SignUpPersonalWorkoutsService.getAllByCoach(id, page);
             dispatch({type:GET_SING_UP_PERSONAL_WORKOUTS_BY_COACH, payload: response.data});
         } catch (error){
-            toast.error('Возникла ошибка при получении списка персональных тренировок')
+            //toast.error('Возникла ошибка при получении списка персональных тренировок')
         }
     };
 
@@ -24,7 +24,7 @@ export const getSignUpPersonalWorkouts = (number) =>
             const response = await SignUpPersonalWorkoutsService.getAll(number);
             dispatch({type:GET_ALL_SING_UP_PERSONAL_WORKOUTS, payload: response.data});
         } catch (error){
-            toast.error('Возникла ошибка при получении списка персональных тренировок')
+           // toast.error('Возникла ошибка при получении списка персональных тренировок')
         }
     };
 
@@ -34,6 +34,6 @@ export const filteringPersonalWorkouts = (params) =>
             const response = await SignUpPersonalWorkoutsService.filtering(params);
             dispatch({type: FILTERING_PERSONAL_WORKOUTS, payload: response.data});
         } catch (error){
-            toast.error('Возникла ошибка при фильтрации персональных тренировок')
+            //toast.error('Возникла ошибка при фильтрации персональных тренировок')
         }
     };

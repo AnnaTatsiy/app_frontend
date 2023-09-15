@@ -21,7 +21,7 @@ export const getAllCoaches = () =>
             const response = await CoachesService.getAllCoaches();
             dispatch({type: GET_ALL_COACHES, payload: response.data});
         } catch (error){
-            toast.error('Возникла ошибка при получении списка тренеров')
+            //toast.error('Возникла ошибка при получении списка тренеров')
         }
     };
 
@@ -32,7 +32,7 @@ export const getCoaches = (number) =>
             const response = await CoachesService.getAll(number);
             dispatch({type: GET_COACHES, payload: response.data});
         } catch (error){
-            toast.error('Возникла ошибка при получении списка тренеров')
+            //toast.error('Возникла ошибка при получении списка тренеров')
         }
     };
 

@@ -8,7 +8,9 @@ const initialState = {
     list: [],
     lastPage: 1,
     fullList: [],
-    selectedSubscription: null
+    selectedSubscription: null,
+    errors: [],
+    state: ""
 }
 
 export default function limitedSubscriptionReducer(state = initialState, action){
@@ -30,10 +32,19 @@ export default function limitedSubscriptionReducer(state = initialState, action)
 
         //добавление
         case ADD_LIMITED_SUBSCRIPTION:
-            return {
-                ...state,
-                list: [...state.list, action.payload],
-                fullList: [...state.fullList, action.payload]
+            if(action.payload.status === "success"){
+                return {
+                    ...state,
+                    state: "success",
+                    list: [...state.list, action.payload.answer],
+                    fullList: [...state.fullList, action.payload.answer]
+                }
+            } else {
+                return {
+                    ...state,
+                    state: "failed",
+                    errors: action.payload.errors
+                }
             }
 
         case GET_ABOUT_LIMITED_SUBSCRIPTION:

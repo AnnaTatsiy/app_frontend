@@ -42,7 +42,12 @@ export default function CustomerFormModal(props) {
                 registration: props.customer.registration
             })
         }
-    }, [props.add, props.customer, props.show]);
+
+        setValueEmail(null);
+        setValueNumber(null);
+        setValuePassport(null);
+
+    }, [props.add, props.customer, props.show, reset]);
 
     // отправка данных на сервер
     function submitCustomerForm(data) {
@@ -52,30 +57,30 @@ export default function CustomerFormModal(props) {
     }
 
     const checkingUniqueNumber = async (value) => {
-        const response =  await fetch(`http://127.0.0.1:8000/api/customers/checking-unique-number/${value}`, {
+        const response = await fetch(`http://127.0.0.1:8000/api/customers/checking-unique-number/${value}`, {
             headers: {"Content-type": "application/json"},
             credentials: 'include'
         })
         const content = await response.json();
-        setValueNumber(content.result < 1);
+        setValueNumber(content.result);
     }
 
     const checkingUniqueEmail = async (value) => {
-        const response =  await fetch(`http://127.0.0.1:8000/api/customers/checking-unique-email/${value}`, {
+        const response = await fetch(`http://127.0.0.1:8000/api/customers/checking-unique-mail/${value}`, {
             headers: {"Content-type": "application/json"},
             credentials: 'include'
         })
         const content = await response.json();
-        setValueEmail(content.result < 1);
+        setValueEmail(content.result);
     }
 
     const checkingUniquePassport = async (value) => {
-        const response =  await fetch(`http://127.0.0.1:8000/api/customers/checking-unique-passport/${value}`, {
+        const response = await fetch(`http://127.0.0.1:8000/api/customers/checking-unique-passport/${value}`, {
             headers: {"Content-type": "application/json"},
             credentials: 'include'
         })
         const content = await response.json();
-        setValuePassport(content.result < 1);
+        setValuePassport(content.result);
     }
 
     return (<>
@@ -276,10 +281,9 @@ export default function CustomerFormModal(props) {
                                     },
 
                                     validate: value => {
-                                        checkingUniqueEmail(value).then(r => r);
+                                        checkingUniqueEmail(value).then((r) => r);
                                         return valueEmail || 'Клиент с данной почтой уже зарегистрирован!'
                                     }
-
                                 })}
                                 isInvalid={!!errors.mail}>
                             </FormControl>

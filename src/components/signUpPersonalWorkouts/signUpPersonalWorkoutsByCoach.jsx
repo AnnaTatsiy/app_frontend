@@ -1,10 +1,13 @@
 import {useDispatch, useSelector} from "react-redux";
 import {useSearchParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {getSignUpPersonalWorkoutsByCoach} from "../../actions/signUpPersonalWorkouts/action.jsx";
+import {getSignUpPersonalWorkoutsByCoach
+} from "../../actions/signUpPersonalWorkouts/action.jsx";
 import Footer from "../footers/footer.jsx";
 import SignUpPersonalWorkoutsByCoachTab from "./signUpPersonalWorkoutsByCoachTab.jsx";
 import ReactPaginate from "react-paginate";
+import axios from "axios";
+import {ProgressBar} from "react-bootstrap";
 
 export default function SignUpPersonalWorkoutsByCoach(){
     const dispatch = useDispatch();
@@ -13,6 +16,22 @@ export default function SignUpPersonalWorkoutsByCoach(){
     // текущая страница
     const [page, setPage] = useState(2);
 
+    //заполненность расписания
+    const [fullness, setFullness] = useState({
+        fact: 1,
+        required: 1,
+        recommend: 1
+    });
+
+    const [variant, setVariant] = useState("secondary");
+    const [progress, setProgress] = useState(100);
+
+    const [variantText, setVariantText] = useState("");
+    const [variantTextColor, setVariantTextColor] = useState("text-secondary");
+
+    //сколько людей записаны на текущей недели
+    const [count, setCount] = useState(0);
+    
     //спискок тренировок
     const workouts = useSelector(state => state.signUpPersonalWorkouts.list);
 
@@ -28,6 +47,46 @@ export default function SignUpPersonalWorkoutsByCoach(){
         dispatch(getSignUpPersonalWorkoutsByCoach(searchParams.get('id'), page));
     }, [dispatch, page, searchParams])
 
+    useEffect(() => {
+        if(workouts.length !== 0) {
+            setCount(workouts.filter(w => w.customer_id !== null).length)
+        }
+    }, [page, searchParams, workouts])
+
+    useEffect(() => {
+        
+        axios.get(`http://127.0.0.1:8000/api/coaches/required-amount-workouts/${searchParams.get('id')}`, {
+            withCredentials: true,
+            headers: {
+                'Access-Control-Allow-Origin': 'api/*',
+                'Access-Control-Allow-Headers': 'Content-Type',
+            }
+        })
+            .then((response) => {
+                if (response.status === 200) {
+                    setFullness(response.data)
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+
+    }, [fullness, searchParams])
+
+    useEffect(() => {
+        setVariant((fullness.fact < fullness.required) ? "danger" : ((fullness.fact < fullness.recommend) ? "warning" : "primary" ))
+
+        const value = (fullness.fact * 100)/fullness.recommend;
+        setProgress((value < 100) ? value : 100)
+        setVariantTextColor("text-"+variant)
+        setVariantText(getVariant());
+    }, [fullness, variant]);
+
+    const getVariant = () => {
+        return (fullness.fact < fullness.required) ? `Расписание не заполнено, требуется еще ${fullness.recommend - fullness.fact} тренеров(ка)ок!` : ((fullness.fact < fullness.recommend)
+            ? `Расписание недостаточно заполнено, требуется еще ${fullness.recommend - fullness.fact} тренеров(ка)ок!` : "Расписание заполнено" );
+    }
+    
     // сортирую тренировки по дням недели
     if(workouts.length !== 0) {
         worksOnMonday = workouts.filter(w => w.schedule.day_id === 1).sort((a, b) => a.schedule.time_begin.localeCompare(b.schedule.time_begin)).sort((a, b) => new Date(a.date_begin) - new Date(b.date_begin));
@@ -37,6 +96,17 @@ export default function SignUpPersonalWorkoutsByCoach(){
         worksOnFriday = workouts.filter(w => w.schedule.day_id === 5).sort((a, b) => a.schedule.time_begin.localeCompare(b.schedule.time_begin)).sort((a, b) => new Date(a.date_begin) - new Date(b.date_begin));
         worksOnSaturday = workouts.filter(w => w.schedule.day_id === 6).sort((a, b) => a.schedule.time_begin.localeCompare(b.schedule.time_begin)).sort((a, b) => new Date(a.date_begin) - new Date(b.date_begin));
         worksOnSunday = workouts.filter(w => w.schedule.day_id === 7).sort((a, b) => a.schedule.time_begin.localeCompare(b.schedule.time_begin)).sort((a, b) => new Date(a.date_begin) - new Date(b.date_begin));
+    }
+
+    const  labelBuilder = (page) => {
+        switch (page){
+            case 1:
+                return "Прошедшая"
+            case 2:
+                return "Текущая неделя"
+            case 3:
+                return "Следующая"
+        }
     }
 
     return (
@@ -49,6 +119,19 @@ export default function SignUpPersonalWorkoutsByCoach(){
                             {(workouts instanceof Array) ?
                                 <div className={"min-height-container"}>
                                     { (worksOnSunday.length !== 0) ? <>
+
+                                        <p className={"text-success"}>Количество занятых записей: {count}</p>
+                                        <p className={"text-primary"}>Количество свободных записей: {workouts.length - count}</p>
+
+                                        <div className="row">
+                                            <div className="col-6">
+                                                <ProgressBar variant={variant} className={"mt-3 mb-2"} animated now={progress} />
+                                            </div>
+                                            <div className="col mt-2">
+                                                <p className={variantTextColor}>{variantText}</p>
+                                            </div>
+                                        </div>
+
 
                                         <ul className="nav nav-pills mb-3" id="myTab" role="tablist">
                                             <li className="nav-item" role="presentation">
@@ -133,16 +216,15 @@ export default function SignUpPersonalWorkoutsByCoach(){
 
                                         </div>
 
-                                    </> : <p className={"text-dark m-3 mt-4"}>У тренера не было тренеровок на этой недели</p>}
+                                    </> : <p className={"text-dark m-3 mt-4"}>У тренера нет тренеровок на этой недели</p>}
 
 
                                     <div className={"custom-paginate"}>
                                         <ReactPaginate
                                             initialPage = {page - 1}
                                             forcePage = {page - 1}
-                                            previousLabel={'«'}
-                                            breakLabel={'...'}
-                                            nextLabel={'»'}
+                                            previousLabel={''}
+                                            nextLabel={''}
                                             pageCount={3}
                                             marginPagesDisplayed={5}
                                             pageRangeDisplayed={8}
@@ -150,13 +232,8 @@ export default function SignUpPersonalWorkoutsByCoach(){
                                             containerClassName={'pagination'}
                                             pageClassName={'page-item'}
                                             pageLinkClassName={'page-link'}
-                                            previousClassName={'page-item'}
-                                            previousLinkClassName={'page-link'}
-                                            nextClassName={'page-item'}
-                                            nextLinkClassName={'page-link'}
-                                            breakClassName={'page-item'}
-                                            breakLinkClassName={'page-link'}
                                             activeClassName={'active'}
+                                            pageLabelBuilder = {labelBuilder}
                                         />
                                     </div>
 

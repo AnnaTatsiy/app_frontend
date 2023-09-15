@@ -76,6 +76,7 @@ export default function LimitedPriceLists(){
                     </div>
                 </div>
 
+            {(viewPrices.length !== 0) ? <>
             <Table>
                 <thead>
                 <tr>
@@ -95,7 +96,7 @@ export default function LimitedPriceLists(){
                 page={page}
                 lastPage={lastPage}
                 setPage={setPage}
-            />
+            /> </> : <p className={"text-dark"}>По вашему запросу ничего не найдено</p>  }
         </>
     )
 }

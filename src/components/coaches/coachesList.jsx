@@ -13,6 +13,7 @@ export default function CoachesList() {
 
     // текущая страница
     const [page, setPage] = useState(1);
+    const [free, setFree] = useState(false);
 
     // вызов ф-ии получения списка тренеров от сервера
     useEffect(() => {
@@ -57,39 +58,46 @@ export default function CoachesList() {
     }
 
     // список отфильтрованных тренеров по серии-номеру паспорта
-    const filteredCoaches = dataList.filter(coach =>
-        coach.passport.includes(searchValue)
-    );
+    const filteredCoaches = dataList.filter(coach => coach.passport.includes(searchValue));
 
     //проверка отобразить всех или по критерию поиска
-    const viewCoaches = (searchValue.length !== 0) ? filteredCoaches : coaches;
+    const viewCoaches_ = ((searchValue.length !== 0) ? filteredCoaches : coaches);
+    const viewCoaches = ((free) ? viewCoaches_.filter(coach => coach.sale !== 0) : viewCoaches_);
 
     return (
         <>
             <Col>
 
-                <div className={"row mt-4"}>
-                    <div className="form-floating col-5">
-                        <input
-                            className="form-control"
-                            type={"text"} value={searchValue}
-                            list="datalistOptions" id="exampleDataList"
-                            placeholder="Type to search..."
-                            onChange={(e) => {
-                                setSearchValue(e.target.value);
-                            }}
-                            name={"passport"}/>
-                        <datalist id="datalistOptions">
-                            {dataList.map((item) => (
-                                <CoachOption key={item.id} coach={item}/>
-                            ))}
-                        </datalist>
-                        <label htmlFor="exampleDataList" className="form-label p-3 ps-4 text-secondary">ФИО или серия-номер
-                            паспорта:</label>
+                <div className="row mt-4">
+                    <div className="col-5">
+                        <div className="form-floating">
+                            <input
+                                className="form-control"
+                                type={"text"} value={searchValue}
+                                list="datalistOptions" id="exampleDataList"
+                                placeholder="Type to search..."
+                                onChange={(e) => {
+                                    setSearchValue(e.target.value);
+                                }}
+                                name={"passport"}/>
+                            <datalist id="datalistOptions">
+                                {dataList.map((item) => (
+                                    <CoachOption key={item.id} coach={item}/>
+                                ))}
+                            </datalist>
+                            <label htmlFor="exampleDataList" className="form-label p-3 ps-4 text-secondary">ФИО или серия-номер
+                                паспорта:</label>
+                        </div>
+                    </div>
+                    <div className="col mt-3">
+                        <div className="form-check">
+                            <input checked={free} onClick={() => setFree(!free)} className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault"></input>
+                             <label className="form-check-label text-dark" htmlFor="flexSwitchCheckDefault">Только тренеры с разрешенной продажей абонементов</label>
+                        </div>
                     </div>
                 </div>
 
-                <div className={"d-flex justify-content-end"}>
+                <div className={"d-flex justify-content-end mt-3"}>
                     <Button variant={"success"} onClick={() => {
                         setFormModalShow(true);
                         setIsAddForm(true);
@@ -99,16 +107,17 @@ export default function CoachesList() {
 
             </Col>
 
-            <Table>
+            {(viewCoaches.length !== 0) ? <>
+            <Table className={"mt-3"}>
                 <thead>
                 <tr>
                     <th>Паспорт</th>
                     <th>ФИО тренера</th>
-                    <th>Номер телефона</th>
+                    <th>Телефон</th>
                     <th>Эл. почта</th>
                     <th>Место проживания</th>
                     <th>Редактировать</th>
-                    <th>Показать тренировки</th>
+                    <th>Тренировки</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -122,7 +131,7 @@ export default function CoachesList() {
                 page={page}
                 lastPage={lastPage}
                 setPage={setPage}
-            />
+            /> </> : <p className={"text-dark"}>По вашему запросу ничего не найдено</p> }
 
             <CoachFormModal
                 show={formModalShow}

@@ -1,12 +1,13 @@
 import {useDispatch, useSelector} from "react-redux";
 import {useForm} from "react-hook-form";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {getAllCustomers} from "../../actions/customers/action";
 import {getAllCoaches} from "../../actions/coaches/action";
 import {Button, FloatingLabel, Form, Modal, Row} from "react-bootstrap";
 import CustomerOption from "../customers/customerOption";
 import CoachOption from "../coaches/coachOption";
-import {addLimitedSubscription} from "../../actions/limitedSubscriptions/action";
+import api from "../../api/axios.js";
+import {toast} from "react-toastify";
 
 export default function LimitedSubscriptionFormModal(props){
 
@@ -16,14 +17,36 @@ export default function LimitedSubscriptionFormModal(props){
     const customers = useSelector(state => state.customers.dataList)
     const coaches = useSelector(state => state.coaches.dataList)
 
+    const [visible, setVisible] = useState(false);
+    const [status, setStatus] = useState(null);
+    const [error, setError] = useState("");
+
+    const filtered = coaches.filter(c => c.sale !== 0);
+
     useEffect( () => {
+
+        setError("");
+        setStatus(null)
 
         reset({
             customer:null,
             coach:null,
             amount_workout:0
         })
-    },[props.show])
+    },[props.show, reset])
+
+    useEffect( () => {
+
+        if(status === "success"){
+
+            setError("");
+            setStatus(null)
+
+            reset()
+            props.onHide()
+        }
+
+    },[props, reset, status])
 
     useEffect(() => {
         dispatch(getAllCustomers())
@@ -35,10 +58,21 @@ export default function LimitedSubscriptionFormModal(props){
 
     // отправка данных на сервер
     function submitForm(data) {
-        dispatch(addLimitedSubscription(data))
-        reset();
-        props.onHide();
-        console.log(data);
+        api.post("http://127.0.0.1:8000/api/limited-subscriptions/add", data)
+            .then((response) => {
+                if (response.status === 200) {
+                    setStatus(response.data.status);
+                    setError(response.data.errors);
+                    setVisible(true);
+
+                    if(response.data.status === "success") {
+                        toast.success('Подписка успешно оформлена!');
+                    }
+                }
+            })
+            .catch((ex) => {
+                toast.error(ex);
+            });
     }
 
     return (
@@ -56,6 +90,41 @@ export default function LimitedSubscriptionFormModal(props){
 
                 <Modal.Body>
                     <Form onSubmit={handleSubmit(submitForm)}>
+
+                        <Form.Group className={"m-3"}>
+                            <div className="form-floating">
+                                <Form.Control
+                                    {...register("coach", {
+                                        required: {
+                                            value:true,
+                                            message: "Поле обязательно к заполнению!"
+                                        }
+                                    })}
+                                    isInvalid={!!errors.coach}
+                                    type={"text"}
+                                    list="datalistOptionsCoaches" id="dataListCoaches"
+                                    onChange={() => setVisible(false)}
+                                    placeholder="ФИО или серия-номер паспорта тренера"/>
+                                <Form.Control.Feedback type="invalid">
+                                    {errors?.coach?.message}
+                                </Form.Control.Feedback>
+                                <datalist id="datalistOptionsCoaches">
+                                    {filtered.map((item) => (
+                                        <CoachOption key={item.id} coach={item}/>
+                                    ))}
+                                </datalist>
+                                <label htmlFor="dataListCoaches" className="form-label text-secondary">ФИО или серия-номер
+                                    паспорта тренера:</label>
+
+                                <div className="mt-2 ms-2">
+                                    {status === "failed" && visible  && !errors?.coach?.message ? (
+                                        <div className={"text-danger"}>
+                                            {error.coach}
+                                        </div> ) : ""}
+                                </div>
+                            </div>
+                        </Form.Group>
+
                         <Form.Group className={"m-3"}>
                             <div className="form-floating">
                                 <Form.Control
@@ -64,7 +133,7 @@ export default function LimitedSubscriptionFormModal(props){
                                         required: {
                                             value: true,
                                             message: "Поле обязательно к заполнению!"
-                                        }
+                                        },
                                     })}
                                     isInvalid={!!errors.customer}
                                     type={"text"}
@@ -80,32 +149,13 @@ export default function LimitedSubscriptionFormModal(props){
                                 </datalist>
                                 <label htmlFor="dataListCustomers" className="form-label text-secondary">ФИО или серия-номер
                                     паспорта клиента:</label>
-                            </div>
-                        </Form.Group>
 
-                        <Form.Group className={"m-3"}>
-                            <div className="form-floating">
-                                <Form.Control
-                                    {...register("coach", {
-                                        required: {
-                                            value:true,
-                                            message: "Поле обязательно к заполнению!"
-                                        }
-                                    })}
-                                    isInvalid={!!errors.coach}
-                                    type={"text"}
-                                    list="datalistOptionsCoaches" id="dataListCoaches"
-                                    placeholder="ФИО или серия-номер паспорта тренера"/>
-                                <Form.Control.Feedback type="invalid">
-                                    {errors?.coach?.message}
-                                </Form.Control.Feedback>
-                                <datalist id="datalistOptionsCoaches">
-                                    {coaches.map((item) => (
-                                        <CoachOption key={item.id} coach={item}/>
-                                    ))}
-                                </datalist>
-                                <label htmlFor="dataListCoaches" className="form-label text-secondary">ФИО или серия-номер
-                                    паспорта тренера:</label>
+                                <div className="mt-2 ms-2">
+                                    {status === "failed"  && visible && !errors?.customer?.message ? (
+                                        <div className={"text-danger"}>
+                                            {error.customer}
+                                        </div> ) : ""}
+                                </div>
                             </div>
                         </Form.Group>
 

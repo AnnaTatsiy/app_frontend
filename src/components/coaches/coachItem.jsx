@@ -1,6 +1,6 @@
 // компонент вывода одного клиента
 
-import {InfoSquareFill, PencilFill} from "react-bootstrap-icons";
+import {InfoSquareFill, PencilFill, PencilSquare} from "react-bootstrap-icons";
 import {Button} from "react-bootstrap";
 import {NavLink} from "react-router-dom";
 
@@ -14,8 +14,8 @@ export default function CoachItem({coach, onClick}){
                 <td>{coach.mail}</td>
                 <td>{coach.registration}</td>
                 <td className={"text-md-center"}>
-                    <Button variant={"success"} className={"fs-6"} onClick={() => onClick(coach.id)}>
-                        <PencilFill/></Button>
+                    <Button variant={"success"} className={"ps-1 p-0 mt-2"} onClick={() => onClick(coach.id)}>
+                        <PencilFill className={"me-1"}/></Button>
                 </td>
                 <td className={"text-md-center"}>
                     <NavLink className={"fs-3"} to={`/personal-workouts/select-workouts-by-coach?id=${coach.id}&page=2`}
